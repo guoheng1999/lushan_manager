@@ -8,47 +8,18 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>下载详情</el-breadcrumb-item>
     </el-breadcrumb>
+    <el-form :inline="true" class="user-search">
+      <el-form-item style="margin-bottom:0px">
+        <el-button size="small" type="primary" icon="el-icon-document" @click="exportExcel()">导出为Excel</el-button>
+      </el-form-item>
+    </el-form>
+    
     <!-- table -->
     <el-table
     height="600px"
-    :data="downloadData.slice((currentPage-1)*pagesize,currentPage*pagesize).filter(data => !search || data.downloadUserId.toLowerCase().includes(search.toLowerCase()) || data.downloadIp.toLowerCase().includes(search.toLowerCase()))"
+    :data="downloadData.filter(data => !search || data.downloadUserId.toLowerCase().includes(search.toLowerCase()) || data.downloadIp.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)"
     style="width: 100%"
     highlight-current-row >
-    <el-table-column
-      label="下载记录ID"
-      prop="id"
-      align="center"
-      sortable
-      width="120">
-    </el-table-column>
-    <el-table-column
-      label="用户ID"
-      prop="downloadUserId"
-      align="center"
-      sortable
-      width="100">
-    </el-table-column>
-    <el-table-column
-      label="用户IP"
-      prop="downloadIp"
-      align="center"
-      sortable
-      width="180">
-    </el-table-column>
-    <el-table-column
-      label="数据名"
-      prop="downloadFileName"
-      align="center"
-      sortable
-      width="200">
-    </el-table-column>
-    <el-table-column
-      label="下载时间"
-      sortable
-      prop="downloadTime"
-      align="center"
-      width="150">
-    </el-table-column>
     <el-table-column
       align="center"
       width="250">
@@ -58,6 +29,41 @@
           size="mini"
           placeholder="输入用户ID、用户IP或数据名搜索"/>
       </template>
+      <el-table-column
+        label="下载记录ID"
+        prop="id"
+        align="center"
+        sortable
+        width="120">
+      </el-table-column>
+      <el-table-column
+        label="用户ID"
+        prop="downloadUserId"
+        align="center"
+        sortable
+        width="100">
+      </el-table-column>
+      <el-table-column
+        label="用户IP"
+        prop="downloadIp"
+        align="center"
+        sortable
+        width="180">
+      </el-table-column>
+      <el-table-column
+        label="数据名"
+        prop="downloadFileName"
+        align="center"
+        sortable
+        width="300">
+      </el-table-column>
+      <el-table-column
+        label="下载时间"
+        sortable
+        prop="downloadTime"
+        align="center"
+        width="200">
+      </el-table-column>
     </el-table-column>
   </el-table>
   <div class="block">
@@ -84,7 +90,7 @@ import {
         currentPage: 1,
         pagesize:10,
         pagesizes:[10,50,100],
-        downloadData: '',
+        downloadData: [],
         search: ''
       }
     },
@@ -134,6 +140,12 @@ import {
           console.log(this.downloadData)
         })
       },
+      exportExcel(){}
     },
   }
 </script>
+<style scoped>
+.user-search {
+  margin-top: 20px;
+}
+</style>

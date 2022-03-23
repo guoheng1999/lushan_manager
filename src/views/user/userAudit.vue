@@ -12,7 +12,7 @@
     <el-table
     type=index
     height="600px"
-    :data="userData.slice((currentPage-1)*pagesize,currentPage*pagesize).filter(data => !search || data.organization.toLowerCase().includes(search.toLowerCase()) || data.realName.toLowerCase().includes(search.toLowerCase()))"
+    :data="userData.filter(data => !search || data.organization.toLowerCase().includes(search.toLowerCase()) || data.realName.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)"
     style="width: 100%"
     highlight-current-row 
     >
@@ -63,9 +63,9 @@
         <el-select v-model="scope.row.roleId" clearable placeholder="请配置用户权限">
           <el-option
             v-for="item in userRoots"
-            :key="item.label"
+            :key="item.value"
             :label="item.label"
-            :value="item.label">
+            :value="item.value">
           </el-option>
         </el-select>
       </template>
@@ -79,7 +79,7 @@
           size="mini"
           placeholder="输入姓名或组织搜索用户"/>
       </template>
-      <template slot-scope="scope">
+      <template :display="isAudit" slot-scope="scope">
         <el-button
           size="mini"
           @click="auditSuccess(scope.$index, scope.row)">审核通过</el-button>
@@ -87,7 +87,10 @@
           size="mini"
           type="danger"
           style="margin-top:5px"
-          @click="handleDelete(scope.$index, scope.row)">审核不通过</el-button>
+          @click="auditFail(scope.$index, scope.row)">审核不通过</el-button>
+      </template>
+      <template>
+        <i class="el-icon-check"></i>
       </template>
     </el-table-column>
   </el-table>
@@ -114,13 +117,16 @@
           :data="auditData"
           style="width: 100%">
           <el-table-column
-            prop="filePathName"
-            label="相关资料"
-            width="200px">
+            prop=""
+            label="编号"
+            width="100px">
+            <template slot-scope="scope">
+              {{scope.$index+1}}
+            </template>
           </el-table-column>
           <el-table-column
             label="链接"
-            width="200px">
+            width="300px">
             <template slot-scope="scope">
               <el-link :href="scope.row.filename" type="primary">{{scope.row.filePathName+'.'+scope.row.fileType}}</el-link>
             </template>
@@ -132,22 +138,45 @@
         <el-button type="primary" @click="materialsDialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 不通过原因输入 -->
+    <el-dialog
+    title="请输入您审核不通过的原因"
+    :visible.sync="causeDialogVisible"
+    width="450px"
+    :before-close="materialsClose">
+      <template>
+        <el-input type="textarea" rows="10" v-model="cause"></el-input>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="causeDialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="seedCause">发送</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import {
   auditUserList,
-  userUserProofList
+  userUserProofList,
+  userAuditPass
 } from '../../api/userMG'
   export default {
     data() {
       return{
+        search: '',
         currentPage: 1,
         pagesize:10,
         pagesizes:[10,50,100],
-        editFormVisible: false,
+        causeDialogVisible: false,
+        cause:'',
         materialsDialogVisible: false,//控制审核资料显示与隐藏
         materialsDialogTitle: '',
+        isAudit: true,
+        auditEdit:{
+          email: '',
+          accountStatus: 0,
+          roleId: '',
+        },
         userRoots: [{
           value: 2,
           label: '管理员'
@@ -159,7 +188,6 @@ import {
           label: '普通用户'
         }],
         userData: [],
-        search: '',
         auditData: []
       }
     },
@@ -184,25 +212,30 @@ import {
       })
         .then(() => {
           // 通过
-          // userDelete(row.id)//不是userdelete
-          //   .then(res => {
-          //     if (res.success) {
-          //       this.$message({
-          //         type: 'success',
-          //         message: '审核已通过!'
-          //       })
-          //       // this.getdata(this.formInline)
-          //     } else {
-          //       this.$message({
-          //         type: 'info',
-          //         message: res.msg
-          //       })
-          //     }
-          //   })
-          //   .catch(err => {
-          //     this.loading = false
-          //     this.$message.error('审核提交失败，请稍后再试！')
-          //   })
+          this.auditEdit.email=row.email
+          this.auditEdit.accountStatus=1
+          this.auditEdit.roleId=row.roleId
+          console.log(row)
+          
+          userAuditPass(this.auditEdit)
+            .then(res => {
+              if (res.code==2000) {
+                this.$message({
+                  type: 'success',
+                  message: '审核已通过!'
+                })
+                this.getdata()
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              this.loading = false
+              this.$message.error('审核提交失败，请稍后再试！')
+            })
         })
         .catch(() => {
           this.$message({
@@ -221,11 +254,58 @@ import {
         console.log(`当前页: ${val}`);
       },
       materialsClose(done) {
-        this.$confirm('确认关闭？')
+        this.$confirm('取消对该用户的操作？',{
+          type:'warning'
+        })
           .then(_ => {
             done();
           })
           .catch(_ => {});
+      },
+      seedCause(){
+        // 发送审核不通过原因，并删除用户信息。
+        userDelete(row.email)
+            .then(res => {
+              if (res.code==2000) {
+                this.$message({
+                  type: 'success',
+                  message: '用户'+row.realName+'已删除!'
+                })
+                this.getdata()
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              this.loading = false
+              this.$message.error('数据删除失败，请稍后再试！')
+            })
+      },
+      auditFail(index, row){
+        const tips=['该操作将删除该用户相关信息','如果确定,请输入您审核不通过的原因']
+        const newDatas=[]
+        const h=this.$createElement
+        for (const i in tips) {
+          newDatas.push(h('p', null, tips[i]))
+        }
+        this.$confirm( '提示', {
+          message:h('div',null,newDatas),
+          confirmButtonText: '填写原因',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(() => {
+          this.causeDialogVisible=true
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消对该用户的审核！'
+          })
+        })
       },
       //查看审核资料
       checkOutMaterial(index, row){

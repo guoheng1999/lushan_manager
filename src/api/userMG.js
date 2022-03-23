@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { loginreq, req, postReqeust,getRequest,putRequest } from './axiosFun';
+import { loginreq, req, postReqeust,getRequest,putRequest,deleteRequest } from './axiosFun';
 
 // 登录接口 
 export const login = (params) => { return postReqeust("/login", params) };
@@ -24,7 +24,9 @@ export const userEdit = (params,userData) => { return putRequest("user/"+params,
 // 用户管理-用户信息-添加
 export const userAdd = (userData) => { return postReqeust("user/",userData) };
 // // 用户管理-删除用户
-// export const userDelete = (params) => { return axios.delete("/api/User/delete?ids=" + params + "&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
+export const userDelete = (params) => { return deleteRequest("/user/" + params)};
+// 用户管理-用户审核-设置权限-通过审核
+export const userAuditPass = (userData) => { return putRequest("user/authorization",userData) };
 // // 用户管理-重置密码
 // export const userPwd = (params) => { return req("post", "/api/User/pwd", params) };
 // // 用户管理-修改状态

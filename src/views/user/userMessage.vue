@@ -16,7 +16,7 @@
     <!--列表-->
     <!-- @selection-change="selectChange" -->
     <el-table height="560px" size="small"
-    :data="userData.slice((currentPage-1)*pagesize,currentPage*pagesize).filter(data => !search || data.realName.toLowerCase().includes(search.toLowerCase()) || data.organization.toLowerCase().includes(search.toLowerCase()))" highlight-current-row 
+    :data="userData.filter(data => !search || data.realName.toLowerCase().includes(search.toLowerCase()) || data.organization.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)" highlight-current-row 
     v-loading="loading" border element-loading-text="拼命加载中" 
     style="width: 100%; font-size:14px">
       <el-table-column align="center" type="selection" width="50">
@@ -88,7 +88,8 @@
 import {
   userList,
   userEdit,
-  userAdd
+  userAdd,
+  userDelete
 } from '../../api/userMG'
 export default {
   data() {
@@ -112,12 +113,6 @@ export default {
         organization: '',
         password: '',
         token: localStorage.getItem('logintoken')
-      },
-      // 部门参数
-      unitparm: {
-        userIds: '',
-        deptId: '',
-        deptName: ''
       },
       // 选择数据
       selectdata: [],
@@ -322,25 +317,25 @@ export default {
       })
         .then(() => {
           // 删除
-          // userDelete(row.id)
-          //   .then(res => {
-          //     if (res.success) {
-          //       this.$message({
-          //         type: 'success',
-          //         message: '数据已删除!'
-          //       })
-          //       this.getdata(this.formInline)
-          //     } else {
-          //       this.$message({
-          //         type: 'info',
-          //         message: res.msg
-          //       })
-          //     }
-          //   })
-          //   .catch(err => {
-          //     this.loading = false
-          //     this.$message.error('数据删除失败，请稍后再试！')
-          //   })
+          userDelete(row.email)
+            .then(res => {
+              if (res.code==2000) {
+                this.$message({
+                  type: 'success',
+                  message: '用户'+row.realName+'已删除!'
+                })
+                this.getdata()
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              this.loading = false
+              this.$message.error('数据删除失败，请稍后再试！')
+            })
         })
         .catch(() => {
           this.$message({
@@ -385,52 +380,6 @@ export default {
           })
         })
     },
-    //数据格式化
-    // changeArr(data) {
-    //   var pos = {}
-    //   var tree = []
-    //   var i = 0
-    //   while (data.length != 0) {
-    //     if (data[i].pId == 0) {
-    //       tree.push({
-    //         id: data[i].id,
-    //         name: data[i].name,
-    //         pId: data[i].pId,
-    //         open: data[i].open,
-    //         checked: data[i].checked,
-    //         children: []
-    //       })
-    //       pos[data[i].id] = [tree.length - 1]
-    //       data.splice(i, 1)
-    //       i--
-    //     } else {
-    //       var posArr = pos[data[i].pId]
-    //       if (posArr != undefined) {
-    //         var obj = tree[posArr[0]]
-    //         for (var j = 1; j < posArr.length; j++) {
-    //           obj = obj.children[posArr[j]]
-    //         }
-
-    //         obj.children.push({
-    //           id: data[i].id,
-    //           name: data[i].name,
-    //           pId: data[i].pId,
-    //           open: data[i].open,
-    //           checked: data[i].checked,
-    //           children: []
-    //         })
-    //         pos[data[i].id] = posArr.concat([obj.children.length - 1])
-    //         data.splice(i, 1)
-    //         i--
-    //       }
-    //     }
-    //     i++
-    //     if (i > data.length - 1) {
-    //       i = 0
-    //     }
-    //   }
-    //   return tree
-    // },
     //分页功能
       handleSizeChange(val) {
         this.pagesize=val
