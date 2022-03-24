@@ -21,11 +21,12 @@ var fileUploadInstance = axios.create({
 		'Access-Control-Allow-Origin': '*',
 		// 'token': sessionStorage.getItem('token') || "eFhyenM4STFZd0JrRGc1WlVacHhvNE0wNkJGdTN1SXRVNGJFNHRZeG4vRkRoVXk2S0FRbzFhTVMzYjA2ajJXNQ=="
 		'token': localStorage.getItem('logintoken')
-	}
+	},
+	responseType: 'blob'
 })
 
 
-const postReqeust =  ( url, params) => {
+const postRequest =  ( url, params) => {
     return instance.post(url, params).then(res => res.data )
 } 
 
@@ -44,13 +45,13 @@ const fileUploadRequest = (url, formData) => {
 }
 
 const fileDownloadRequest = (url, formData) => {
-    return fileUploadInstance.get(url, formData).then(res=>res.data)
+    return fileUploadInstance.get(url, formData).then(res=>res)
 }
 
 export {
     getRequest,
     putRequest,
-    postReqeust,
+    postRequest,
     deleteRequest,
     fileUploadRequest,
     fileDownloadRequest

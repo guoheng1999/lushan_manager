@@ -128,7 +128,7 @@
             label="链接"
             width="300px">
             <template slot-scope="scope">
-              <el-link :href="scope.row.filename" type="primary">{{scope.row.filePathName+'.'+scope.row.fileType}}</el-link>
+              <el-link @click="downloadAuditData(scope.row.filePathName)" type="primary">{{scope.row.filePathName+'.'+scope.row.fileType}}</el-link>
             </template>
           </el-table-column>
         </el-table>
@@ -149,7 +149,7 @@
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="causeDialogVisible=false">取 消</el-button>
-        <el-button type="primary" @click="seedCause">发送</el-button>
+        <el-button type="primary" @click="seedCause()">发送</el-button>
       </span>
     </el-dialog>
   </div>
@@ -157,8 +157,11 @@
 <script>
 import {
   auditUserList,
-  userUserProofList,
-  userAuditPass
+  userProofList,
+  downloadUserProofData,
+  userAuditPass,
+  seedMessage,
+  userDelete
 } from '../../api/userMG'
   export default {
     data() {
@@ -188,13 +191,21 @@ import {
           label: '普通用户'
         }],
         userData: [],
-        auditData: []
+        auditData: [],
+        auditDataPath:'',
+        causeEmail:'',
+        causeMessage:{
+          message:'',
+          type: '',
+          email: ''
+        }
       }
     },
     /**
     * 数据发生改变
     */
-    watch: {},
+    watch: {
+    },
 
     /**
     * 创建完毕
@@ -215,8 +226,6 @@ import {
           this.auditEdit.email=row.email
           this.auditEdit.accountStatus=1
           this.auditEdit.roleId=row.roleId
-          console.log(row)
-          
           userAuditPass(this.auditEdit)
             .then(res => {
               if (res.code==2000) {
@@ -235,6 +244,28 @@ import {
             .catch(err => {
               this.loading = false
               this.$message.error('审核提交失败，请稍后再试！')
+            }),
+            this.causeMessage.email=row.email
+            this.causeMessage.type=0
+            this.causeMessage.message=''
+            seedMessage(this.causeMessage)
+              .then(res => {
+                if (res.code==2000) {
+                  this.$message({
+                    type: 'success',
+                    message: '已给用户发送邮件!'
+                  })
+                  this.getdata()
+                } else {
+                  this.$message({
+                    type: 'info',
+                    message: res.msg
+                  })
+                }
+              })
+              .catch(err => {
+                this.loading = false
+              this.$message.error('发送失败，请稍后重试！')
             })
         })
         .catch(() => {
@@ -264,8 +295,37 @@ import {
       },
       seedCause(){
         // 发送审核不通过原因，并删除用户信息。
-        userDelete(row.email)
+        //发送
+        this.causeMessage.email=this.causeEmail
+        this.causeMessage.type=1
+        this.causeMessage.message=this.cause
+        console.log(this.causeMessage)
+        seedMessage(this.causeMessage)
+          .then(res => {
+              if (res.code==2000) {
+                this.$message({
+                  type: 'success',
+                  message: '已给用户发送邮件!'
+                })
+                this.getdata()
+              } else {
+                this.$message({
+                  type: 'info',
+                  message: res.msg
+                })
+              }
+            })
+            .catch(err => {
+              this.loading = false
+              this.$message.error('发送失败，请稍后重试！')
+            })
+        this.causeDialogVisible=false
+        this.cause=''
+        //删除
+        userDelete(this.causeEmail)
             .then(res => {
+              
+        console.log(res)
               if (res.code==2000) {
                 this.$message({
                   type: 'success',
@@ -298,6 +358,7 @@ import {
           type: 'warning'
         })
         .then(() => {
+          this.causeEmail=row.email
           this.causeDialogVisible=true
         })
         .catch(() => {
@@ -334,13 +395,13 @@ import {
           console.log(this.userData)
         })
       },
-      // 获取数据方法
+      // 获取用户审核资料
       getauditdata(params) {
         this.loading = true
         /***
         * 调用接口 获取用户列表
         */
-        userUserProofList(params).then(res => {
+        userProofList(params).then(res => {
           this.loading = false
           if (res.code == 2404) {
             this.$message({
@@ -353,6 +414,26 @@ import {
           console.log(this.auditData)
         })
       },
+      downloadAuditData(params){
+        //下载审核资料
+        downloadUserProofData(params).then(res => {
+          let blob = new Blob([res.data])
+					let contentDisposition = res.headers['content-disposition'] //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
+					let patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')
+					let result = patt.exec(contentDisposition)
+          console.log(result)
+					let thename = decodeURI(result[1]) //使用decodeURI对名字进行解码
+					let downloadElement = document.createElement('a')
+					let href = window.URL.createObjectURL(blob) //创建下载的链接
+					downloadElement.style.display = 'none'
+					downloadElement.href = href
+					downloadElement.download = thename //下载后文件名
+					document.body.appendChild(downloadElement)
+					downloadElement.click() //点击下载
+					document.body.removeChild(downloadElement) //下载完成移除元素
+					window.URL.revokeObjectURL(href) //释放掉blob对象
+        })
+      }
     },
   }
 </script>

@@ -16,6 +16,7 @@
     
     <!-- table -->
     <el-table
+    id="downloadDetailsTable"
     height="600px"
     :data="downloadData.filter(data => !search || data.downloadUserId.toLowerCase().includes(search.toLowerCase()) || data.downloadIp.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)"
     style="width: 100%"
@@ -51,7 +52,7 @@
         width="180">
       </el-table-column>
       <el-table-column
-        label="数据名"
+        label="文件名"
         prop="downloadFileName"
         align="center"
         sortable
@@ -84,6 +85,7 @@
 import {
   downloadList
 } from '../../api/downloadMG'
+import XLSX from 'xlsx'
   export default {
     data() {
       return {
@@ -140,7 +142,17 @@ import {
           console.log(this.downloadData)
         })
       },
-      exportExcel(){}
+      exportExcel(){
+        let table = document.getElementById('downloadDetailsTable')
+        let worksheet = XLSX.utils.table_to_sheet(table);
+        let workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'sheet');
+        try {
+	        XLSX.writeFile(workbook, '下载记录.xlsx');
+        } catch(e) {
+	        console.log(e, workbook);
+        }
+      }
     },
   }
 </script>

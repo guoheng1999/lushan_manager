@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { loginreq, req, postReqeust,getRequest,putRequest,deleteRequest } from './axiosFun';
+import { reset } from 'echarts/lib/visual/seriesColor';
+import { loginreq, req, postRequest,getRequest,putRequest,deleteRequest,fileDownloadRequest } from './axiosFun';
 
 // 登录接口 
-export const login = (params) => { return postReqeust("/login", params) };
+export const login = (params) => { return postRequest("/login", params) };
 // // 获取用户菜单
 // export const menu = (params) => { return axios.get("/api/menu?&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 // // 退出接口
@@ -11,18 +12,20 @@ export const login = (params) => { return postReqeust("/login", params) };
 // /**
 //  * 用户管理 
 //  **/
-// 用户管理-用户信息-获取待审核用户列表
+// 用户管理-用户审核-获取待审核用户列表
 export const auditUserList = (params) => { return getRequest("user/reviewed/all", params) };
-// 用户管理-用户信息-获取用户审核资料
-export const userUserProofList = (params) => { return getRequest("userProof/user/"+params) };
-// 用户管理-用户信息-获取用户审核资料
-// export const userUserProofList = (params) => { return getRequest("file/download/user/proof"+params) };
+// 用户管理-用户审核-获取用户审核资料
+export const userProofList = (params) => { return getRequest("userProof/user/"+params) };
+// 用户管理-用户审核-下载
+export const downloadUserProofData = (params) => { return fileDownloadRequest("file/download/user/proof?fileName="+params) };
+// 用户管理-用户审核-获取用户审核资料
+export const seedMessage = (params) => { return postRequest("/email",params) };
 // 用户管理-用户信息-获取用户列表
 export const userList = (params) => { return getRequest("user/all", params) };
 // 用户管理-用户信息-保存（修改）
 export const userEdit = (params,userData) => { return putRequest("user/"+params,userData) };
 // 用户管理-用户信息-添加
-export const userAdd = (userData) => { return postReqeust("user/",userData) };
+export const userAdd = (userData) => { return postRequest("user/",userData) };
 // // 用户管理-删除用户
 export const userDelete = (params) => { return deleteRequest("/user/" + params)};
 // 用户管理-用户审核-设置权限-通过审核
