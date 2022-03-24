@@ -74,10 +74,12 @@
       align="center"
       width="250px">
       <template slot="header">
-        <el-input
+        <!-- <el-input
+          @change="inputChange($event)"
           v-model="search"
           size="mini"
-          placeholder="输入姓名或组织搜索用户"/>
+          placeholder="输入姓名或组织搜索用户"></el-input> -->
+        <el-input v-model="search" size="mini" placeholder="搜索"></el-input>
       </template>
       <template :display="isAudit" slot-scope="scope">
         <el-button
@@ -293,6 +295,9 @@ import {
           })
           .catch(_ => {});
       },
+      // inputChange(e){
+      //   this.$forceUpdate()
+      // },
       seedCause(){
         // 发送审核不通过原因，并删除用户信息。
         //发送

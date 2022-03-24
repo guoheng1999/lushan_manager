@@ -18,6 +18,7 @@ import downloadDetails from '@/views/downloadManage/downloadDetails'
 import downloadMessage from '@/views/downloadManage/downloadMessage';
 
 
+
 // 启用路由
 Vue.use(Router);
 

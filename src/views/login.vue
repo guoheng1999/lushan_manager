@@ -132,9 +132,9 @@ export default {
   width: 100%;
   height: 100%;
   padding-top: 10%;
-  /* background-image: url(../assets/img/bg.png); */
+  background-image: url(../assets/img/bg.png);
   background-repeat: no-repeat;
-  background-position: center right;
+  position: fixed;
   background-size: 100%;
 }
 .login-container {

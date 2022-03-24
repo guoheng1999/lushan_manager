@@ -22,49 +22,39 @@
     style="width: 100%"
     highlight-current-row >
     <el-table-column
+      label="下载记录ID"
+      prop="id"
       align="center"
-      width="250">
-      <template slot="header">
-        <el-input
-          v-model="search"
-          size="mini"
-          placeholder="输入用户ID、用户IP或数据名搜索"/>
-      </template>
-      <el-table-column
-        label="下载记录ID"
-        prop="id"
-        align="center"
-        sortable
-        width="120">
-      </el-table-column>
-      <el-table-column
-        label="用户ID"
-        prop="downloadUserId"
-        align="center"
-        sortable
-        width="100">
-      </el-table-column>
-      <el-table-column
-        label="用户IP"
-        prop="downloadIp"
-        align="center"
-        sortable
-        width="180">
-      </el-table-column>
-      <el-table-column
-        label="文件名"
-        prop="downloadFileName"
-        align="center"
-        sortable
-        width="300">
-      </el-table-column>
-      <el-table-column
-        label="下载时间"
-        sortable
-        prop="downloadTime"
-        align="center"
-        width="200">
-      </el-table-column>
+      sortable
+      width="120">
+    </el-table-column>
+    <el-table-column
+      label="用户ID"
+      prop="downloadUserId"
+      align="center"
+      sortable
+      width="100">
+    </el-table-column>
+    <el-table-column
+      label="用户IP"
+      prop="downloadIp"
+      align="center"
+      sortable
+      width="180">
+    </el-table-column>
+    <el-table-column
+      label="文件名"
+      prop="downloadFileName"
+      align="center"
+      sortable
+      width="300">
+    </el-table-column>
+    <el-table-column
+      label="下载时间"
+      sortable
+      prop="downloadTime"
+      align="center"
+      width="200">
     </el-table-column>
   </el-table>
   <div class="block">
@@ -143,15 +133,19 @@ import XLSX from 'xlsx'
         })
       },
       exportExcel(){
-        let table = document.getElementById('downloadDetailsTable')
-        let worksheet = XLSX.utils.table_to_sheet(table);
-        let workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'sheet');
-        try {
-	        XLSX.writeFile(workbook, '下载记录.xlsx');
-        } catch(e) {
-	        console.log(e, workbook);
-        }
+        this.pagesize=this.downloadData.length
+        this.$nextTick(function(){
+          let table = document.getElementById('downloadDetailsTable')
+          let worksheet = XLSX.utils.table_to_sheet(table);
+          let workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(workbook, worksheet, 'sheet');
+          try {
+            XLSX.writeFile(workbook, '下载记录.xlsx');
+          } catch(e) {
+            console.log(e, workbook);
+          } 
+          this.pagesize=10
+        })
       }
     },
   }
