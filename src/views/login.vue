@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <el-form label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
-      <h3 class="title">用户登录</h3>
+      <h3 class="title">庐山云雾观测数据集后端管理平台<br/>用户登录</h3>
       <el-form-item prop="userEmail">
         <el-input type="text" v-model="ruleForm.userEmail" auto-complete="off" placeholder="邮箱"></el-input>
       </el-form-item>
@@ -132,16 +132,19 @@ export default {
   width: 100%;
   height: 100%;
   padding-top: 10%;
-  background-image: url(../assets/img/bg.png);
+  background-image: url(../assets/img/loginBackground.jpg);
   background-repeat: no-repeat;
   position: fixed;
-  background-size: 100%;
+  background-size: 100% 100%;
 }
 .login-container {
   border-radius: 10px;
-  margin: 0px auto;
+  /* margin: 0px auto; */
+  margin-right: 15%;
+  float: right;
   width: 350px;
   padding: 30px 35px 15px 35px;
+  backdrop-filter:blur(20px);
   background: transparent;
   /* border: 1px solid #eaeaea; */
   text-align: left;

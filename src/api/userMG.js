@@ -27,7 +27,9 @@ export const userEdit = (params,userData) => { return putRequest("user/"+params,
 // 用户管理-用户信息-添加
 export const userAdd = (userData) => { return postRequest("user/",userData) };
 // // 用户管理-删除用户
-export const userDelete = (params) => { return deleteRequest("/user/" + params)};
+export const userDeleteLogical = (params) => { return deleteRequest("/user/" + params)};
+//审核不通过
+export const userDeletePhysics = (params) => { return deleteRequest("/user/physics/" + params)};
 // 用户管理-用户审核-设置权限-通过审核
 export const userAuditPass = (userData) => { return putRequest("user/authorization",userData) };
 // // 用户管理-重置密码

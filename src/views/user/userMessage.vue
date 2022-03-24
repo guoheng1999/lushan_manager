@@ -32,7 +32,7 @@
       <!-- <el-table-column align="center" sortable prop="AuditImg" width="150px" label="审核资料">
       </el-table-column> -->
       <el-table-column label="操作" align="center" width="250px">
-        <template slot="header">
+        <template slot="header" slot-scope="scope">
           <el-input
             v-model="search"
             size="mini"
@@ -89,7 +89,7 @@ import {
   userList,
   userEdit,
   userAdd,
-  userDelete
+  userDeleteLogical
 } from '../../api/userMG'
 export default {
   data() {
@@ -317,7 +317,7 @@ export default {
       })
         .then(() => {
           // 删除
-          userDelete(row.email)
+          userDeleteLogical(row.email)
             .then(res => {
               if (res.code==2000) {
                 this.$message({

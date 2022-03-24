@@ -73,13 +73,11 @@
     <el-table-column
       align="center"
       width="250px">
-      <template slot="header">
-        <!-- <el-input
-          @change="inputChange($event)"
+      <template slot="header" slot-scope="scope">
+        <el-input
           v-model="search"
           size="mini"
-          placeholder="输入姓名或组织搜索用户"></el-input> -->
-        <el-input v-model="search" size="mini" placeholder="搜索"></el-input>
+          placeholder="输入姓名或组织搜索用户"></el-input>
       </template>
       <template :display="isAudit" slot-scope="scope">
         <el-button
@@ -163,7 +161,7 @@ import {
   downloadUserProofData,
   userAuditPass,
   seedMessage,
-  userDelete
+  userDeletePhysics
 } from '../../api/userMG'
   export default {
     data() {
@@ -195,6 +193,7 @@ import {
         userData: [],
         auditData: [],
         auditDataPath:'',
+        auditFailRealName: '',
         causeEmail:'',
         causeMessage:{
           message:'',
@@ -295,9 +294,6 @@ import {
           })
           .catch(_ => {});
       },
-      // inputChange(e){
-      //   this.$forceUpdate()
-      // },
       seedCause(){
         // 发送审核不通过原因，并删除用户信息。
         //发送
@@ -327,14 +323,13 @@ import {
         this.causeDialogVisible=false
         this.cause=''
         //删除
-        userDelete(this.causeEmail)
+        userDeletePhysics(this.causeEmail)
             .then(res => {
-              
-        console.log(res)
+              console.log(res)
               if (res.code==2000) {
                 this.$message({
                   type: 'success',
-                  message: '用户'+row.realName+'已删除!'
+                  message: '用户'+this.auditFailRealName+'已删除!'
                 })
                 this.getdata()
               } else {
@@ -345,6 +340,7 @@ import {
               }
             })
             .catch(err => {
+              console.log(err)
               this.loading = false
               this.$message.error('数据删除失败，请稍后再试！')
             })
@@ -364,6 +360,7 @@ import {
         })
         .then(() => {
           this.causeEmail=row.email
+          this.auditFailRealName=row.realName
           this.causeDialogVisible=true
         })
         .catch(() => {
