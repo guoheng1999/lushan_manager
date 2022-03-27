@@ -1,6 +1,10 @@
 import axios from 'axios';
+var BASE_URL_CONFIG = {
+	'DEV' :'http://10.23.107.96:8081/lushan',
+	'TEST' : 'http://106.12.109.129:8849/lushan'
+}
 const LUSHAN_CONFIG = {
-	BASE_URL: 'http://10.23.107.96:8081/lushan',
+	BASE_URL: BASE_URL_CONFIG['TEST'],
 	TIME_OUT: 100000
 }
 
@@ -10,7 +14,7 @@ var instance = axios.create({
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		// 'token': sessionStorage.getItem('token') || "eFhyenM4STFZd0JrRGc1WlVacHhvNE0wNkJGdTN1SXRVNGJFNHRZeG4vRkRoVXk2S0FRbzFhTVMzYjA2ajJXNQ=="
-		'token': localStorage.getItem('logintoken')
+		'token': localStorage.getItem('logintoken') || ''
 	}
 })
 
@@ -20,7 +24,7 @@ var fileUploadInstance = axios.create({
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		// 'token': sessionStorage.getItem('token') || "eFhyenM4STFZd0JrRGc1WlVacHhvNE0wNkJGdTN1SXRVNGJFNHRZeG4vRkRoVXk2S0FRbzFhTVMzYjA2ajJXNQ=="
-		'token': localStorage.getItem('logintoken')
+		'token': localStorage.getItem('logintoken') || ''
 	},
 	responseType: 'blob'
 })

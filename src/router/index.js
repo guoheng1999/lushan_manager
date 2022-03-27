@@ -13,6 +13,9 @@ import userAudit from '@/views/user/userAudit'
 import userMessage from '@/views/user/userMessage'
 //数据集管理
 import dataManage from '@/views/dataManage/dataManage'
+//数据集管理
+import dataFeedBack from '@/views/dataFeedBack/dataFeedBack'
+
 //下载管理
 import downloadDetails from '@/views/downloadManage/downloadDetails'
 import downloadMessage from '@/views/downloadManage/downloadMessage';
@@ -63,6 +66,13 @@ export default new Router({
             path: '/dataManage/dataManage',
             name: '数据集管理',
             component: dataManage,
+            meta: {
+                requireAuth: true
+            }
+        },{
+            path: '/dataFeedBack/dataFeedBack',
+            name: '数据反馈',
+            component: dataFeedBack,
             meta: {
                 requireAuth: true
             }

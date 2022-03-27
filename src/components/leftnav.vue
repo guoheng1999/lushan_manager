@@ -79,6 +79,23 @@ export default {
           ]
         },
         {
+          menuid: 44,
+          icon: 'li-icon-dingdanguanli',
+          menuname: '数据反馈',
+          hasThird: null,
+          url: null,
+          menus: [
+            {
+              menuid: 45,
+              icon: 'icon-order-manage',
+              menuname: '数据反馈',
+              hasThird: 'N',
+              url: 'dataFeedBack/dataFeedBack',
+              menus: null
+            }
+          ]
+        },
+        {
           menuid: 150,
           icon: 'li-icon-shujujiankong',
           menuname: '下载日志',

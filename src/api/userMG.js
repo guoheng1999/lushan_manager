@@ -18,7 +18,7 @@ export const auditUserList = (params) => { return getRequest("user/reviewed/all"
 export const userProofList = (params) => { return getRequest("userProof/user/"+params) };
 // 用户管理-用户审核-下载
 export const downloadUserProofData = (params) => { return fileDownloadRequest("file/download/user/proof?fileName="+params) };
-// 用户管理-用户审核-获取用户审核资料
+// 用户管理-用户审核-给用户发送邮件
 export const seedMessage = (params) => { return postRequest("/email",params) };
 // 用户管理-用户信息-获取用户列表
 export const userList = (params) => { return getRequest("user/all", params) };
