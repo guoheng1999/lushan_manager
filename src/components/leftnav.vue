@@ -4,7 +4,7 @@
 <template>
   <el-menu default-active="2" :collapse="collapsed" collapse-transition router :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#F1F7FD" text-color="#000000" active-text-color="#1977CC">
     <div class="logobox">
-      <p>庐山云雾观测<br />后台管理</p>
+      <p>庐山云雾观测数据集<br />平台管理</p>
     </div>
     <el-submenu v-for="menu in allmenu" :key="menu.menuid" :index="menu.menuname">
       <template slot="title">
@@ -61,23 +61,23 @@ export default {
             }
           ]
         },
-        {
-          menuid: 33,
-          icon: 'li-icon-dingdanguanli',
-          menuname: '数据集管理',
-          hasThird: null,
-          url: null,
-          menus: [
-            {
-              menuid: 34,
-              icon: 'icon-order-manage',
-              menuname: '数据集管理',
-              hasThird: 'N',
-              url: 'dataManage/dataManage',
-              menus: null
-            }
-          ]
-        },
+        // {
+        //   menuid: 33,
+        //   icon: 'li-icon-dingdanguanli',
+        //   menuname: '数据集管理',
+        //   hasThird: null,
+        //   url: null,
+        //   menus: [
+        //     {
+        //       menuid: 34,
+        //       icon: 'icon-order-manage',
+        //       menuname: '数据集管理',
+        //       hasThird: 'N',
+        //       url: 'dataManage/dataManage',
+        //       menus: null
+        //     }
+        //   ]
+        // },
         {
           menuid: 44,
           icon: 'li-icon-dingdanguanli',
@@ -95,37 +95,37 @@ export default {
             }
           ]
         },
-        {
-          menuid: 150,
-          icon: 'li-icon-shujujiankong',
-          menuname: '下载日志',
-          hasThird: null,
-          url: null,
-          menus: [
-            {
-              menuid: 159,
-              icon: 'li-icon-shujujiankong',
-              menuname: '下载总览',
-              hasThird: 'N',
-              url: 'downloadManage/downloadMessage',
-              menus: null
-            },
-            {
-              menuid: 160,
-              icon: 'icon-promotion-manage',
-              menuname: '下载详情',
-              hasThird: 'N',
-              url: 'downloadManage/downloadDetails',
-              menus: null
-            }
-          ]
-        }
+        // {
+        //   menuid: 150,
+        //   icon: 'li-icon-shujujiankong',
+        //   menuname: '下载日志',
+        //   hasThird: null,
+        //   url: null,
+        //   menus: [
+        //     {
+        //       menuid: 159,
+        //       icon: 'li-icon-shujujiankong',
+        //       menuname: '下载总览',
+        //       hasThird: 'N',
+        //       url: 'downloadManage/downloadMessage',
+        //       menus: null
+        //     },
+        //     {
+        //       menuid: 160,
+        //       icon: 'icon-promotion-manage',
+        //       menuname: '下载详情',
+        //       hasThird: 'N',
+        //       url: 'downloadManage/downloadDetails',
+        //       menus: null
+        //     }
+        //   ]
+        // }
       ],
       msg: 'success'
     }
           this.allmenu = res.data
     
-    // menu(localStorage.getItem('logintoken'))
+    // menu(sessionStorage.getItem('logintoken'))
     //   .then(res => {
     //     console.log(JSON.stringify(res))
     //     if (res.success) {

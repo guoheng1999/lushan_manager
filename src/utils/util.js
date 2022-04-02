@@ -21,30 +21,30 @@ const timestampToTime = (timestamp) => {
     return Y + M + D + h + m + s
 };
 /**
- * 存储localStorage
+ * 存储sessionStorage
  */
 const setStore = (name, content) => {
     if (!name) return;
     if (typeof content !== 'string') {
         content = JSON.stringify(content);
     }
-    window.localStorage.setItem(name, content);
+    window.sessionStorage.setItem(name, content);
 }
 
 /**
- * 获取localStorage
+ * 获取sessionStorage
  */
 const getStore = name => {
     if (!name) return;
-    return window.localStorage.getItem(name);
+    return window.sessionStorage.getItem(name);
 }
 
 /**
- * 删除localStorage
+ * 删除sessionStorage
  */
 const removeStore = name => {
     if (!name) return;
-    window.localStorage.removeItem(name);
+    window.sessionStorage.removeItem(name);
 }
 
 /**

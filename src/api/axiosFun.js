@@ -14,7 +14,7 @@ var instance = axios.create({
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		// 'token': sessionStorage.getItem('token') || "eFhyenM4STFZd0JrRGc1WlVacHhvNE0wNkJGdTN1SXRVNGJFNHRZeG4vRkRoVXk2S0FRbzFhTVMzYjA2ajJXNQ=="
-		'token': localStorage.getItem('logintoken') || ''
+		'token': sessionStorage.getItem('logintoken') || ''
 	}
 })
 
@@ -24,7 +24,7 @@ var fileUploadInstance = axios.create({
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		// 'token': sessionStorage.getItem('token') || "eFhyenM4STFZd0JrRGc1WlVacHhvNE0wNkJGdTN1SXRVNGJFNHRZeG4vRkRoVXk2S0FRbzFhTVMzYjA2ajJXNQ=="
-		'token': localStorage.getItem('logintoken') || ''
+		'token': sessionStorage.getItem('logintoken') || ''
 	},
 	responseType: 'blob'
 })

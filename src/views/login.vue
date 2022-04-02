@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <el-form label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
-      <h3 class="title">庐山云雾观测数据集后端管理平台<br/>用户登录</h3>
+      <h3 class="title">庐山云雾观测数据集平台管理</h3>
       <el-form-item prop="userEmail">
         <el-input type="text" v-model="ruleForm.userEmail" auto-complete="off" placeholder="邮箱"></el-input>
       </el-form-item>
@@ -74,14 +74,6 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.logining = true
-          // 测试通道，不为空直接登录
-          // setTimeout(() => {
-          //   this.logining = false
-          //   this.$store.commit('login', 'true')
-          //   console.log(this.ruleForm)
-          //   this.$router.push({ path: '/user/userAudit' })
-          // }, 1000)
-          // 注释
           const params  = {email: that.ruleForm.userEmail, password: this.ruleForm.password}
           login(params).then(res => {
             console.log(res)
@@ -99,11 +91,14 @@ export default {
               setTimeout(() => {
                 this.logining = false
                 // 缓存token
-                localStorage.setItem('logintoken', res.data.token)
+                sessionStorage.setItem('logintoken', res.data.token)
                 console.log('缓存')
                 console.log(res.data.token)
+                console.log('123456')
+                console.log(sessionStorage.getItem('logintoken'))
                 // 缓存用户个人信息
-                localStorage.setItem('userdata', JSON.stringify(res.data))
+                sessionStorage.setItem('userdata', JSON.stringify(res.data))
+                console.log(sessionStorage.getItem('userdata'))
                 this.$store.commit('login', 'true')
                 this.$router.push({ path: '/user/userAudit' })
               }, 1000)

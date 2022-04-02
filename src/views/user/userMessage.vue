@@ -112,7 +112,7 @@ export default {
         email: '',
         organization: '',
         password: '',
-        token: localStorage.getItem('logintoken')
+        token: sessionStorage.getItem('logintoken')
       },
       // 选择数据
       selectdata: [],
@@ -143,20 +143,20 @@ export default {
       // 删除用户
       seletedata: {
         ids: '',
-        token: localStorage.getItem('logintoken')
+        token: sessionStorage.getItem('logintoken')
       },
       // 重置密码
       resetpsd: {
         userId: '',
-        token: localStorage.getItem('logintoken')
+        token: sessionStorage.getItem('logintoken')
       },
       // 用户下线
       offline: {
-        token: localStorage.getItem('logintoken')
+        token: sessionStorage.getItem('logintoken')
       },
       // 请求数据参数
       formInline: {
-        token: localStorage.getItem('logintoken')
+        token: sessionStorage.getItem('logintoken')
       },
       //用户数据
       userData: [],
@@ -280,7 +280,7 @@ export default {
         phone: '',
         email: '',
         organization: '',
-        token: localStorage.getItem('logintoken')
+        token: sessionStorage.getItem('logintoken')
       }
     },
     handleClick(data, checked, node) {
