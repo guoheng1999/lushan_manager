@@ -3,7 +3,7 @@ import { reset } from 'echarts/lib/visual/seriesColor';
 import { loginreq, req, postRequest,getRequest,putRequest,deleteRequest,fileDownloadRequest } from './axiosFun';
 
 // 登录接口
-export const login = (params) => { return postRequest("/login", params) };
+export const login = (params) => { return postRequest("/manager/login", params) };
 // // 获取用户菜单
 // export const menu = (params) => { return axios.get("/api/menu?&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 // // 退出接口
