@@ -2,16 +2,16 @@ import axios from 'axios';
 import { reset } from 'echarts/lib/visual/seriesColor';
 import { loginreq, req, postRequest,getRequest,putRequest,deleteRequest,fileDownloadRequest } from './axiosFun';
 
-// 登录接口 
+// 登录接口
 export const login = (params) => { return postRequest("/login", params) };
 // // 获取用户菜单
 // export const menu = (params) => { return axios.get("/api/menu?&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 // // 退出接口
 // export const loginout = () => { return axios.delete("/api/login?&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 
-// /**
-//  * 用户管理 
-//  **/
+/**
+ * 用户管理
+ **/
 // 用户管理-用户审核-获取待审核用户列表
 export const auditUserList = (params) => { return getRequest("user/reviewed/all", params) };
 // 用户管理-用户审核-获取用户审核资料
@@ -26,9 +26,9 @@ export const userList = (params) => { return getRequest("user/all", params) };
 export const userEdit = (params,userData) => { return putRequest("user/"+params,userData) };
 // 用户管理-用户信息-添加
 export const userAdd = (userData) => { return postRequest("user/",userData) };
-// // 用户管理-删除用户
-export const userDeleteLogical = (params) => { return deleteRequest("/user/" + params)};
-//审核不通过
+// 用户管理-删除用户  警告！！！  这里的接口已经改为了物理删除
+export const userDeleteLogical = (params) => { return deleteRequest("/user/physics/" + params)};
+// 审核不通过
 export const userDeletePhysics = (params) => { return deleteRequest("/user/physics/" + params)};
 // 用户管理-用户审核-设置权限-通过审核
 export const userAuditPass = (userData) => { return putRequest("user/authorization",userData) };
@@ -64,7 +64,7 @@ export const userAuditPass = (userData) => { return putRequest("user/authorizati
 // export const ModuleDelete = (params) => { return axios.delete("/api/Module/delete?ids=" + params + "&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 
 // /**
-//  * 角色管理 
+//  * 角色管理
 //  **/
 // // 角色管理-获取角色列表
 // export const roleList = (params) => { return req("post", "/api/Role/list", params) };
@@ -78,7 +78,7 @@ export const userAuditPass = (userData) => { return putRequest("user/authorizati
 // export const RoleRightSave = (params) => { return req("post", "/api/RoleRight/save", params) };
 
 // /**
-//  * 公司管理 
+//  * 公司管理
 //  **/
 // // 公司管理-获取公司列表
 // export const deptList = (params) => { return req("post", "/api/Dept/list", params) };
@@ -88,7 +88,7 @@ export const userAuditPass = (userData) => { return putRequest("user/authorizati
 // export const deptDelete = (params) => { return axios.get("/api/Dept/delete?ids=" + params + "&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 
 // /**
-//  * 系统环境变量 
+//  * 系统环境变量
 //  **/
 // // 系统环境变量-获取系统环境变量列表
 // export const variableList = (params) => { return req("post", "/api/Variable/list", params) };
@@ -98,7 +98,7 @@ export const userAuditPass = (userData) => { return putRequest("user/authorizati
 // export const variableDelete = (params) => { return axios.delete("/api/Variable/delete?ids=" + params + "&token=" + localStorage.getItem('logintoken')).then(res => res.data) };
 
 // /**
-//  * 权限管理 
+//  * 权限管理
 //  **/
 // // 权限管理-获取权限列表
 // export const permissionList = (params) => { return req("post", "/api/Permission/list", params) };

@@ -1,6 +1,6 @@
 /**
 * 头部菜单
-*/ 
+*/
 <template>
   <el-menu class="el-menu-demo" mode="horizontal" background-color="#F1F7FD" text-color="#1977CC" active-text-color="#1977CC">
     <el-button class="buttonimg">
@@ -30,7 +30,7 @@ export default {
   },
   // 创建完毕状态(里面是操作)
   created() {
-    this.user = JSON.parse(localStorage.getItem('userdata'))
+    this.user = JSON.parse(sessionStorage.getItem('userdata'))
   },
   methods: {
     // 退出登录
@@ -39,42 +39,18 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      })
-        .then(() => {
+      }).then(() => {
           setTimeout(() => {
             this.$store.commit('logout', 'false')
+            sessionStorage.removeItem('userdata')
+            sessionStorage.removeItem('logintoken')
             this.$router.push({ path: '/login' })
             this.$message({
               type: 'success',
               message: '已退出登录!'
             })
           }, 1000)
-          // loginout()
-          //   .then(res => {
-          //     if (res.success) {
-          //       //如果请求成功就让他2秒跳转路由
-          //       setTimeout(() => {
-          //         this.$store.commit('logout', 'false')
-          //         this.$router.push({ path: '/login' })
-          //         this.$message({
-          //           type: 'success',
-          //           message: '已退出登录!'
-          //         })
-          //       }, 1000)
-          //     } else {
-          //       this.$message.error(res.msg)
-          //       this.logining = false
-          //       return false
-          //     }
-          //   })
-          //   .catch(err => {
-          //     // 获取图形验证码
-          //     this.getcode()
-          //     this.logining = false
-          //     this.$message.error('退出失败，请稍后再试！')
-          //   })
-        })
-        .catch(() => {
+        }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消'

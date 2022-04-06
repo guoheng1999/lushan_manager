@@ -1,8 +1,8 @@
 /**
 * 左边菜单
-*/ 
+*/
 <template>
-  <el-menu default-active="2" :collapse="collapsed" collapse-transition router :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#F1F7FD" text-color="#000000" active-text-color="#1977CC">
+  <el-menu :collapse="collapsed" collapse-transition router :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#F1F7FD" text-color="#000000" active-text-color="#1977CC">
     <div class="logobox">
       <p>庐山云雾观测数据集<br />平台管理</p>
     </div>
@@ -124,7 +124,7 @@ export default {
       msg: 'success'
     }
           this.allmenu = res.data
-    
+
     // menu(sessionStorage.getItem('logintoken'))
     //   .then(res => {
     //     console.log(JSON.stringify(res))
