@@ -2,7 +2,7 @@ import axios from 'axios';
 
 var BASE_URL_CONFIG = {
   'DEV': 'http://10.23.107.96:8081/lushan',
-  'TEST': 'http://106.12.109.129:8849/lushan'
+  'TEST': 'http://106.13.10.209:8849/lushan'
 }
 const LUSHAN_CONFIG = {
   BASE_URL: BASE_URL_CONFIG['TEST'],
