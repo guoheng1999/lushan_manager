@@ -14,7 +14,7 @@
     style="margin-top:15px;width: 100%"
     height="600px"
     :data="dataFeedBack.filter(data => !search || data.dataName.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)"
-    highlight-current-row 
+    highlight-current-row
     >
     <el-table-column
       align="center"
@@ -27,19 +27,19 @@
       </template>
         <el-table-column
             label="数据名称"
-            prop="dataName"
+            prop="content"
             align="center"
             width="350px"
             sortable>
         </el-table-column>
         <el-table-column
-            label="反馈信息"
-            prop="message"
+            label="用户邮箱"
+            prop="userEmail"
             align="center"
-            width="500px">
+            width="350px">
         </el-table-column>
         <el-table-column
-            label="图片/PDF资料"
+            label="具体反馈数据"
             prop="material"
             align="center"
             width="150px">
@@ -66,9 +66,10 @@
     <el-dialog
     :title="materialsDialogTitle"
     :visible.sync="materialsDialogVisible"
-    width="450px"
+    width="600px"
     :before-close="materialsClose">
       <template>
+
         <el-table
           :data="material"
           style="width: 100%">
@@ -98,10 +99,13 @@
 </template>
 <script>
 import {
-  auditUserList,
-  userProofList,
-  downloadUserProofData,
-} from '../../api/userMG'
+  feedbackDataList,
+  feedbackFileList,
+  downloadFeedbackFile,
+  // auditUserList,
+  // userProofList,
+  // downloadUserProofData,
+} from '../../api/dataFeedBack.js'
   export default {
     data() {
       return{
@@ -153,17 +157,17 @@ import {
       checkMaterial(index, row){
         console.log(index,row)
         this.materialsDialogVisible=true
-        this.materialsDialogTitle=this.dataFeedBack[index].realName+'的审核资料'
-        console.log(row.email)
-        this.getauditdata(row.email)
+        this.materialsDialogTitle=this.dataFeedBack[index].userEmail+'的反馈数据'
+        console.log(row.id)
+        this.getauditdata(row.id)
       },
       // 获取数据方法
       getdata() {
         this.loading = true
         /***
-        * 调用接口 获取用户列表
+        * 调用接口 获取反馈数据列表
          */
-        auditUserList().then(res => {
+        feedbackDataList().then(res => {
           this.loading = false
           if (res.code == 2404) {
             this.$message({
@@ -176,13 +180,13 @@ import {
           console.log(this.dataFeedBack)
         })
       },
-      // 获取用户审核资料
+      // 获取具体反馈数据
       getauditdata(params) {
         this.loading = true
         /***
-        * 调用接口 获取用户列表
+        * 调用接口 获取具体反馈数据
         */
-        userProofList(params).then(res => {
+        feedbackFileList(params).then(res => {
           this.loading = false
           if (res.code == 2404) {
             this.$message({
@@ -196,8 +200,8 @@ import {
         })
       },
       downloadMaterial(params){
-        //下载审核资料
-        downloadUserProofData(params).then(res => {
+        //下载反馈数据文件
+        downloadFeedbackFile(params).then(res => {
           let blob = new Blob([res.data])
 					let contentDisposition = res.headers['content-disposition'] //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
 					let patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')

@@ -37,6 +37,12 @@ Object.keys(custom).forEach(key => {
   if (to.matched.length != 0) {
       if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
             if (Boolean(sessionStorage.getItem("userdata"))) { // 通过vuex state获取当前的user是否存在
+
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.length != 0) {
+//         if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+//             if (Boolean(sessionStorage.getItem("userInfo"))) { // 通过vuex state获取当前的user是否存在
+
                 next();
             } else {
                 next({
@@ -45,9 +51,21 @@ Object.keys(custom).forEach(key => {
                 })
             }
         } else {
+
         if (Boolean(sessionStorage.getItem("userdata"))) { // 判断是否登录
             if (to.path != "/" && to.path != "/login") { //判断是否要跳到登录界面
                 next();
+            // if (Boolean(sessionStorage.getItem("userInfo"))) { // 判断是否登录
+            //     if (to.path != "/" && to.path != "/login") { //判断是否要跳到登录界面
+            //         next();
+                // } else {
+                //     /**
+                //      * 防刷新，如果登录，修改路由跳转到登录页面，修改路由为登录后的首页
+                //      */
+                //     next({
+                //         path: '/user/userMessage'
+                //     })
+                // }
             } else {
                 //
                  // 防刷新，如果登录，修改路由跳转到登录页面，修改路由为登录后的首页

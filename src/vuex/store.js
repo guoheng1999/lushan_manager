@@ -12,11 +12,14 @@ export default new Vuex.Store({
         login(state, user) {
             state.user = user;
             sessionStorage.setItem("userdata", user);
+
+            // sessionStorage.setItem("userInfo", user);
         },
         // 退出
         logout(state, user) {
             state.user = "";
           sessionStorage.setItem("userdata", "");
+            // sessionStorage.setItem("userInfo", "");
         }
     }
 })
