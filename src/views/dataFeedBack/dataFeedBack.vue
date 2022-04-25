@@ -36,23 +36,25 @@
     <el-dialog :title="materialsDialogTitle" :visible.sync="materialsDialogVisible" width="600px"
       :before-close="materialsClose">
       <template>
-        <el-descriptions style="width: 100%; color: #909399;" title="反馈信息">
-        </el-descriptions>
-        <div style="width: 100%;margin-bottom: 0.625rem; color: #909399;text-indent: 2em;">
+        <!-- <el-descriptions style="width: 100%; color: #909399;" title="反馈信息">
+        </el-descriptions> -->
+        <p class="feedbackTips">反馈信息</p>
+        <div class="feedbackMessageClass">
           {{feedbackMessage}}
         </div>
-        <el-descriptions style="width: 100%; color: #909399;" title="反馈文件列表">
-        </el-descriptions>
+        <!-- <el-descriptions style="width: 100%; color: #909399;" title="反馈文件列表">
+        </el-descriptions> -->
+        <p class="feedbackTips">反馈文件列表</p>
         <el-table :data="material" style="width: 100%">
-          <el-table-column prop="" label="编号" width="100px">
+          <!-- <el-table-column prop="" label="编号" width="100px">
             <template slot-scope="scope">
               {{scope.$index+1}}
             </template>
-          </el-table-column>
-          <el-table-column label="链接" width="300px">
+          </el-table-column> -->
+          <el-table-column label="下载链接" custom-class="mycell">
             <template slot-scope="scope">
-              <el-link @click="downloadMaterial(scope.row.commentFileName)" type="primary">
-                {{scope.row.commentFileName+'.'+scope.row.commentFileType}}
+              <el-link @click="downloadMaterial(scope.row.fileName)" type="primary">
+                {{scope.row.fileName+'.'+scope.row.fileType}}
               </el-link>
             </template>
           </el-table-column>
@@ -65,14 +67,38 @@
     </el-dialog>
   </div>
 </template>
+<style>
+  .feedbackMessageClass{
+    width: 98%;
+    margin-bottom: 0.625rem;
+    color: #909399;
+    text-indent: 2em;
+    border: solid 1.8px #eee;
+    padding: 10px;
+    border-radius: 4px;
+    line-height:1.7;
+    /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); */
+  }
+  .feedbackTips{
+    color: #909399;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.7;
+  }
+  .mycell{
+    font-weight: normal;
+  }
+  .el-dialog__title {
+      line-height: 24px;
+      font-size: 18px;
+      color: #909799;
+  }
+</style>
 <script>
   import {
     feedbackDataList,
     feedbackFileList,
     downloadFeedbackFile,
-    // auditUserList,
-    // userProofList,
-    // downloadUserProofData,
   } from '../../api/dataFeedBack.js'
   export default {
     data() {

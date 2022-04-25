@@ -16,11 +16,11 @@
     <!--列表-->
     <!-- @selection-change="selectChange" -->
     <el-table height="560px" size="small"
-    :data="userData.filter(data => !search || data.realName.toLowerCase().includes(search.toLowerCase()) || data.organization.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)" highlight-current-row 
-    v-loading="loading" border element-loading-text="拼命加载中" 
+    :data="userData.filter(data => !search || data.realName.toLowerCase().includes(search.toLowerCase()) || data.organization.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)" highlight-current-row
+    v-loading="loading" border element-loading-text="拼命加载中"
     style="width: 100%; font-size:14px">
-      <el-table-column align="center" type="selection" width="50">
-      </el-table-column>
+    <!-- <el-table-column align="center" type="selection" width="50">
+    </el-table-column> -->
       <el-table-column align="center" sortable prop="realName" width="150px" label="姓名">
       </el-table-column>
       <el-table-column align="center" sortable prop="email" width="200px" label="邮件">
@@ -401,5 +401,3 @@ export default {
   width: 100%;
 }
 </style>
-
- 
