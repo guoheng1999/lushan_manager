@@ -14,7 +14,7 @@
     height="600px"
     :data="userData.filter(data => !search || data.organization.toLowerCase().includes(search.toLowerCase()) || data.realName.toLowerCase().includes(search.toLowerCase())).slice((currentPage-1)*pagesize,currentPage*pagesize)"
     style="width: 100%"
-    highlight-current-row 
+    highlight-current-row
     >
     <el-table-column
       label="姓名"
@@ -128,7 +128,7 @@
             label="链接"
             width="300px">
             <template slot-scope="scope">
-              <el-link @click="downloadAuditData(scope.row.filePathName)" type="primary">{{scope.row.filePathName+'.'+scope.row.fileType}}</el-link>
+              <el-link @click="downloadAuditData(scope.row.filePathName)" :disabled="isdownloading" type="primary">{{scope.row.filePathName+'.'+scope.row.fileType}}</el-link>
             </template>
           </el-table-column>
         </el-table>
@@ -166,6 +166,7 @@ import {
   export default {
     data() {
       return{
+        isdownloading: false,
         search: '',
         currentPage: 1,
         pagesize:10,
@@ -418,6 +419,12 @@ import {
       },
       downloadAuditData(params){
         //下载审核资料
+        this.isdownloading = true
+        const serverMessage = this.$message({
+          type: 'success',
+          message: '服务器正在响应，请稍后！',
+          duration: 0
+        })
         downloadUserProofData(params).then(res => {
           let blob = new Blob([res.data])
 					let contentDisposition = res.headers['content-disposition'] //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
@@ -434,6 +441,15 @@ import {
 					downloadElement.click() //点击下载
 					document.body.removeChild(downloadElement) //下载完成移除元素
 					window.URL.revokeObjectURL(href) //释放掉blob对象
+          serverMessage.close()
+          this.isdownloading = false
+        }).catch(err => {
+          serverMessage.close()
+          this.isdownloading = false
+          this.$message({
+            type: 'error',
+            message: '系统出错，未找到该文件或文件已被删除！'
+          })
         })
       }
     },

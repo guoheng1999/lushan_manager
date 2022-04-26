@@ -215,6 +215,13 @@
       },
       downloadMaterial(params) {
         //下载反馈数据文件
+
+        this.isdownloading = true
+        const serverMessage = this.$message({
+          type: 'success',
+          message: '服务器正在响应，请稍后！',
+          duration: 0
+        })
         downloadFeedbackFile(params).then(res => {
           let blob = new Blob([res.data])
           let contentDisposition = res.headers[
@@ -233,6 +240,15 @@
           downloadElement.click() //点击下载
           document.body.removeChild(downloadElement) //下载完成移除元素
           window.URL.revokeObjectURL(href) //释放掉blob对象
+          serverMessage.close()
+          this.isdownloading = false
+        }).catch(err =>{
+          serverMessage.close()
+          this.isdownloading = false
+          this.$message({
+            type: 'error',
+            message: '系统出错，未找到该文件或文件已被删除！'
+          })
         })
       }
     },
