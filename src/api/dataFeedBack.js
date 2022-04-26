@@ -9,5 +9,10 @@ export const feedbackDataList = (params) => { return getRequest("/comment/") };
 export const feedbackFileList = (params) => { return getRequest("/commentFile/commentId/"+params) };
 
 /*下载反馈数据文件*/
-export const downloadFeedbackFile = (params) => { return fileDownloadRequest("/file/download/comment/"+params) };
+export const downloadFeedbackFile = (params) => {
+  const data = {
+    'fileName': params
+  }
+  return fileDownloadRequest("/file/download/comment/", data)
+};
 // /file/download/comment/{commentFileName}

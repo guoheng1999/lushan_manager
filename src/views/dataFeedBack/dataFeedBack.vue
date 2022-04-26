@@ -44,14 +44,13 @@
         </div>
         <!-- <el-descriptions style="width: 100%; color: #909399;" title="反馈文件列表">
         </el-descriptions> -->
-        <p class="feedbackTips">反馈文件列表</p>
         <el-table :data="material" style="width: 100%">
           <!-- <el-table-column prop="" label="编号" width="100px">
             <template slot-scope="scope">
               {{scope.$index+1}}
             </template>
           </el-table-column> -->
-          <el-table-column label="下载链接" custom-class="mycell">
+          <el-table-column label="数据反馈文件" custom-class="mycell">
             <template slot-scope="scope">
               <el-link @click="downloadMaterial(scope.row.fileName)" type="primary">
                 {{scope.row.fileName+'.'+scope.row.fileType}}

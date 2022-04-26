@@ -81,7 +81,7 @@ const fileDownloadRequest = (url, formData) => {
     },
     responseType: 'blob'
   })
-    .get(url, formData).then(res => res)
+    .post(url, formData).then(res => res)
 }
 
 export {
