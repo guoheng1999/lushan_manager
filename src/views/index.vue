@@ -64,7 +64,7 @@ export default {
   beforeMount() {
     // 弹出登录成功
     this.$message({
-      message: '登录成功',
+      message: '您已成功登录。',
       type: 'success'
     })
   }

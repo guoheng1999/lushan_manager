@@ -151,14 +151,11 @@
           })
           .catch(_ => {});
       },
-      //查看审核资料
+      //查看反馈信息
       checkMaterial(index, row) {
-        console.log(index, row)
         this.materialsDialogVisible = true
         this.materialsDialogTitle = this.dataFeedBack[index].userEmail + '的反馈数据'
-        console.log(row.id)
         this.feedbackMessage = JSON.parse(row.content).content
-        console.log(this.feedbackMessage)
         this.getauditdata(row.id)
       },
       // 获取数据方法
@@ -196,7 +193,7 @@
           } else {
             this.material = res.data
           }
-          console.log(this.material)
+          // console.log(this.material)
         })
       },
       //数据解析
@@ -219,7 +216,7 @@
         this.isdownloading = true
         const serverMessage = this.$message({
           type: 'success',
-          message: '服务器正在响应，请稍后！',
+          message: '服务器正在准备，请您稍等。',
           duration: 0
         })
         downloadFeedbackFile(params).then(res => {
@@ -229,7 +226,7 @@
           ] //从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
           let patt = new RegExp('filename=([^;]+\\.[^\\.;]+);*')
           let result = patt.exec(contentDisposition)
-          console.log(result)
+          // console.log(result)
           let thename = decodeURI(result[1]) //使用decodeURI对名字进行解码
           let downloadElement = document.createElement('a')
           let href = window.URL.createObjectURL(blob) //创建下载的链接

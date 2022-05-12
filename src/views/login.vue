@@ -92,10 +92,10 @@ export default {
                 this.logining = false
                 // 缓存token
                 sessionStorage.setItem('logintoken', res.data.token)
-                console.log('缓存')
-                console.log(res.data.token)
-                console.log('123456')
-                console.log(sessionStorage.getItem('logintoken'))
+                // console.log('缓存')
+                // console.log(res.data.token)
+                // console.log('123456')
+                // console.log(sessionStorage.getItem('logintoken'))
                 // 缓存用户个人信息
                 sessionStorage.setItem('userdata', JSON.stringify(res.data))
                 console.log(sessionStorage.getItem('userdata'))

@@ -149,7 +149,7 @@
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="causeDialogVisible=false">取 消</el-button>
-        <el-button type="primary" @click="seedCause()">发送</el-button>
+        <el-button type="primary" @click="seedCause(username)">发送</el-button>
       </span>
     </el-dialog>
   </div>
@@ -191,6 +191,7 @@ import {
           value: 0 ,
           label: '普通用户'
         }],
+        username: '',
         userData: [],
         auditData: [],
         auditDataPath:'',
@@ -233,7 +234,7 @@ import {
               if (res.code==2000) {
                 this.$message({
                   type: 'success',
-                  message: '审核已通过!'
+                  message: row.realName + '的注册账号已通过审核。'
                 })
                 this.getdata()
               } else {
@@ -255,7 +256,7 @@ import {
                 if (res.code==2000) {
                   this.$message({
                     type: 'success',
-                    message: '已给用户发送邮件!'
+                    message: '已给' + row.realName + '发送了注册账号成功的邮件。'
                   })
                   this.getdata()
                 } else {
@@ -273,18 +274,18 @@ import {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消对该用户的审核！'
+            message: '已取消对' + row.realName + '注册账号的审核。'
           })
         })
     },
       //分页功能
       handleSizeChange(val) {
         this.pagesize=val
-        console.log(`每页 ${val} 条`);
+        // console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
         this.currentPage=val
-        console.log(`当前页: ${val}`);
+        // console.log(`当前页: ${val}`);
       },
       materialsClose(done) {
         this.$confirm('取消对该用户的操作？',{
@@ -295,19 +296,19 @@ import {
           })
           .catch(_ => {});
       },
-      seedCause(){
+      seedCause(username){
         // 发送审核不通过原因，并删除用户信息。
         //发送
         this.causeMessage.email=this.causeEmail
         this.causeMessage.type=1
         this.causeMessage.message=this.cause
-        console.log(this.causeMessage)
+        // console.log(this.causeMessage)
         seedMessage(this.causeMessage)
           .then(res => {
               if (res.code==2000) {
                 this.$message({
                   type: 'success',
-                  message: '已给用户发送邮件!'
+                  message: '已给用户邮箱' + username + '发送了注册账号不成功的原因。'
                 })
                 this.getdata()
               } else {
@@ -330,7 +331,7 @@ import {
               if (res.code==2000) {
                 this.$message({
                   type: 'success',
-                  message: '用户'+this.auditFailRealName+'已删除!'
+                  message: '不通过' + this.auditFailRealName+'注册账号的审核，已将其注册账号删除。'
                 })
                 this.getdata()
               } else {
@@ -347,6 +348,7 @@ import {
             })
       },
       auditFail(index, row){
+        this.username = row.realName
         const tips=['该操作将删除该用户相关信息','如果确定,请输入您审核不通过的原因']
         const newDatas=[]
         const h=this.$createElement
@@ -367,7 +369,7 @@ import {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消对该用户的审核！'
+            message: '已取消对' + row.realName + '注册账号的审核。'
           })
         })
       },
@@ -422,7 +424,7 @@ import {
         this.isdownloading = true
         const serverMessage = this.$message({
           type: 'success',
-          message: '服务器正在响应，请稍后！',
+          message: '服务器正在准备数据，请您稍等。',
           duration: 0
         })
         downloadUserProofData(params).then(res => {

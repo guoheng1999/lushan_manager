@@ -234,8 +234,8 @@ export default {
     },
     // 编辑、添加提交方法
     submitForm(params,editData) {
-      console.log(params)
-      console.log(editData)
+      // console.log(params)
+      // console.log(editData)
       // 请求方法
       if(this.title=='修改用户'){
         userEdit(params,editData)
@@ -246,7 +246,7 @@ export default {
             this.getdata()
             this.$message({
               type: 'success',
-              message: '用户信息修改成功！'
+              message: editData.realName+'的用户信息修改成功。'
             })
           } else {
             this.$message({
@@ -322,7 +322,7 @@ export default {
               if (res.code==2000) {
                 this.$message({
                   type: 'success',
-                  message: '用户'+row.realName+'已删除!'
+                  message: row.realName+'的账号已删除。'
                 })
                 this.getdata()
               } else {
